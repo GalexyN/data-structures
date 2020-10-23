@@ -1,11 +1,11 @@
 var Queue = function() {
   // Hey! Rewrite in the new style. Your code will wind up looking very similar,
   // but try not not reference your old code in writing the new style.
-  let stack = {};
-  _.extend(stack, queueMethods);
-  stack.storage = {};
-  stack.count = 0;
-  return stack;
+  let queue = {};
+  _.extend(queue, queueMethods);
+  queue.storage = {};
+  queue.count = 0;
+  return queue;
 };
 
 var queueMethods = {
