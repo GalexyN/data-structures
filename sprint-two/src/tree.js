@@ -1,9 +1,11 @@
 var Tree = function(value) {
-  var newTree = Object.create(treeMethods); //gives methods to Tree
+  var newTree = {}; //gives methods to Tree
   newTree.value = value;
 
   // your code here
   newTree.children = [];
+
+  _.extend(newTree, treeMethods);
 
   return newTree;
 };
@@ -37,10 +39,12 @@ treeMethods.contains = function(target, node) {
 };
 
 var Node = function(value) {
-  var childNode = Object.create(treeMethods);
-  childNode.value = value;
+  var childNode = {};
 
+  childNode.value = value;
   childNode.children = [];
+
+  _.extend(childNode, treeMethods);
 
   return childNode;
 };
@@ -48,3 +52,6 @@ var Node = function(value) {
 /*
  * Complexity: What is the time complexity of the above functions?
  */
+
+//addChild - O(1)
+//contains - O(n)
