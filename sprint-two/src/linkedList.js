@@ -9,6 +9,7 @@
 // node.value look up
 //-----------------------------------------------------
 
+
 var LinkedList = function() {
   var list = {};
   list.head = null;
@@ -16,6 +17,7 @@ var LinkedList = function() {
 
   list.addToTail = function(value) {
     let node = new Node(value);
+
     if (this.head === null) {
       this.head = node;
     } else {
@@ -39,14 +41,14 @@ var LinkedList = function() {
   list.contains = function(target) {
     let current = this.head;
 
-    while (current.next) { //head to 1 before tail
+    while (current.next) { // head to 1 before tail
       if (current.value === target) {
         return true;
       }
       current = current.next;
     }
 
-    if (current.value === target) { //catches tail
+    if (current.value === target) { // catches tail
       return true;
     }
 
@@ -68,3 +70,7 @@ var Node = function(value) {
 /*
  * Complexity: What is the time complexity of the above functions?
  */
+
+// addToTail = O(n);
+// removedHead = O(1);
+// contains = O(n);
