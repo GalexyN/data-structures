@@ -17,19 +17,23 @@ returns boolean
 var Set = function() {
   var set = Object.create(setPrototype);
   set._storage = []; // fix me
+
+  set._limit = 10;
   return set;
 };
 
 var setPrototype = {};
 
 setPrototype.add = function(item) {
-  if (!this.contains(item)) {
-    this._storage.push(item);
-  }
+  var index = getIndexBelowMaxForKey(item, this._limit); //gives hash number
+
+  this._storage[index] = item;
 };
 
 setPrototype.contains = function(item) {
-  if (this._storage.indexOf(item) !== -1) {
+  var index = getIndexBelowMaxForKey(item, this._limit); //gives hash number
+
+  if (this._storage[index] !== undefined) {
     return true;
   }
 
@@ -37,18 +41,31 @@ setPrototype.contains = function(item) {
 };
 
 setPrototype.remove = function(item) {
-  if (!this.contains(item)) {
-    return false;
-  }
+  var index = getIndexBelowMaxForKey(item, this._limit); //gives hash number
 
-  var itemIndex = this._storage.indexOf(item);
-  this._storage.splice(itemIndex, 1);
+  delete this._storage[index];
 };
 
 /*
  * Complexity: What is the time complexity of the above functions?
  */
 
+//  -----------------------1st TIME-----------------------
 //add - O(n) - while using .contains it loops and we have to check the array for unique values
 //contains - O(n)
 //remove - O(n))
+
+//  -----------------------2nd TIME-----------------------
+// ADD = O(1)
+// CONTAINS = O(1)
+// REMOVE = O(1)
+
+var getIndexBelowMaxForKey = function(str, max) {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = (hash << 5) + hash + str.charCodeAt(i);
+    hash = hash & hash; // Convert to 32bit integer
+    hash = Math.abs(hash);
+  }
+  return hash % max;
+};
