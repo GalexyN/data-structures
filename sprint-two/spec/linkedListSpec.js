@@ -62,4 +62,11 @@ describe('linkedList', function() {
     linkedList.removeHead();
     expect(linkedList.size()).to.equal(3);
   });
+
+  it('count should not go negative', function () {
+    linkedList.addToTail(1);
+    linkedList.removeHead();
+    linkedList.removeHead();
+    expect(linkedList.size()).to.equal(0);
+  });
 });
