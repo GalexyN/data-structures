@@ -47,6 +47,17 @@ describe('hashTable', function() {
     window.getIndexBelowMaxForKey = oldHashFunction;
   });
 
+  // created contains value function to handle worst collision
+  it('should handle a monster collision', function () {
+    hashTable.insert('Monster', 'Zombie');
+    hashTable.insert('Monster', 'Vampire');
+    hashTable.insert('Monster', 'Warewolf');
+    hashTable.insert('Monster', 'Ghoul');
+
+    expect(hashTable.contains('Monster', 'Ghoul')).to.equal(true);
+    expect(hashTable.contains('Monster', 'Puppy')).to.equal(false);
+  });
+
   // (Advanced! Remove the extra "x" when you want the following tests to run)
   xit ('should double in size when needed', function() {
     _.each(people, function(person) {

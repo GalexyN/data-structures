@@ -1,35 +1,28 @@
-/*
-Set is an array of unique values
-
-.add -
-push to set.storage array
-
-.contains -
-indexOf !== -1
-returns boolean
-
-.remove -
-.splice
-
-*/
-
-
 var Set = function() {
   var set = Object.create(setPrototype);
-  set._storage = []; // fix me
+  set._storage = [];
+
+  set._limit = 10;
+  set.valuesInsideSet = 0;
+
   return set;
 };
 
 var setPrototype = {};
 
 setPrototype.add = function(item) {
-  if (!this.contains(item)) {
-    this._storage.push(item);
+  var index = getIndexBelowMaxForKey(item, this._limit);
+  if (!this._storage[index]) {
+    this.valuesInsideSet++;
   }
+
+  this._storage[index] = item;
 };
 
 setPrototype.contains = function(item) {
-  if (this._storage.indexOf(item) !== -1) {
+  var index = getIndexBelowMaxForKey(item, this._limit);
+
+  if (this._storage[index] !== undefined) {
     return true;
   }
 
@@ -37,18 +30,37 @@ setPrototype.contains = function(item) {
 };
 
 setPrototype.remove = function(item) {
-  if (!this.contains(item)) {
-    return false;
+  var index = getIndexBelowMaxForKey(item, this._limit);
+
+  delete this._storage[index];
+
+  if (this.valuesInsideSet > 0) {
+    this.valuesInsideSet--;
+  }
+};
+
+var getIndexBelowMaxForKey = function(str, max) {
+  var hash = 0;
+
+  for (var i = 0; i < str.length; i++) {
+    hash = (hash << 5) + hash + str.charCodeAt(i);
+    hash = hash & hash;
+    hash = Math.abs(hash);
   }
 
-  var itemIndex = this._storage.indexOf(item);
-  this._storage.splice(itemIndex, 1);
+  return hash % max;
 };
 
 /*
  * Complexity: What is the time complexity of the above functions?
  */
 
+//  -----------------------1st TIME-----------------------
 //add - O(n) - while using .contains it loops and we have to check the array for unique values
 //contains - O(n)
 //remove - O(n))
+
+//  -----------------------2nd TIME-----------------------
+// ADD = O(1)
+// CONTAINS = O(1)
+// REMOVE = O(1)

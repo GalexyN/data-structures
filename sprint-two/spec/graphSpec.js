@@ -68,4 +68,13 @@ describe('graph', function() {
     expect(graph.hasEdge(3, 5)).to.equal(true);
     expect(graph.hasEdge(5, 5)).to.equal(true);
   });
+
+  it('should keep track of the graph size', function() {
+    graph.addNode(9);
+    graph.addNode(3);
+    graph.addNode(5);
+    graph.removeNode(3);
+
+    expect(graph.getSize()).to.equal(2);
+  });
 });
