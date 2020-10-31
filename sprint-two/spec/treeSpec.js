@@ -41,4 +41,9 @@ describe('tree', function() {
     expect(tree.contains(8)).to.equal(true);
   });
 
+  // custom test
+  it('See is our tree instance is an extension of treeMethods', function () {
+    expect(tree.seeIfExtended()).to.equal(true);
+  });
+
 });

@@ -29,9 +29,9 @@ HashTable.prototype.insert = function(k, v) {
   var tuple = [k, v];
   let found = false;
 
-  if (Array.isArray(this._storage[index])) {
-    for (var i = 0; i < this._storage[index].length; i++) { //loops through bucket
-      var tuples = this._storage[index][i];
+  if (Array.isArray(this._storage.get(index))) {
+    for (var i = 0; i < this._storage.get(index).length; i++) { //loops through bucket
+      var tuples = this._storage.get(index)[i];
       if (tuples[0] === k) {
         tuples[1] = v;
         found = true;
@@ -39,18 +39,18 @@ HashTable.prototype.insert = function(k, v) {
     }
 
     if (!found) {
-      this._storage[index].push(tuple);
+      this._storage.get(index).push(tuple);
     }
   } else {
     var bucket = [];
     bucket.push(tuple);
-    this._storage[index] = bucket;
+    this._storage.set(index, bucket);
   }
 };
 
 HashTable.prototype.retrieve = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  var bucket = this._storage[index]; //array
+  var bucket = this._storage.get(index); //array
 
   for (var i = 0; i < bucket.length; i++) {
     var keyToTest = bucket[i][0];
@@ -62,10 +62,25 @@ HashTable.prototype.retrieve = function(k) {
   return undefined;
 };
 
+// created new method for new test
+HashTable.prototype.contains = function(k, v) {
+  var index = getIndexBelowMaxForKey(k, this._limit);
+  var bucket = this._storage.get(index); //array
+
+  for (var i = 0; i < bucket.length; i++) {
+    var valueToTest = bucket[i][1];
+    if (valueToTest === v) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 HashTable.prototype.remove = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
 
-  var bucket = this._storage[index];
+  var bucket = this._storage.get(index);
   var indexOfK;
 
   for (var i = 0; i < bucket.length; i++) {

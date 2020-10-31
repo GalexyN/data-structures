@@ -1,19 +1,8 @@
-// for tail - make a node
-// if list.head === null then tail = the newly added node
-//------------------------------------------------------
-// remove head - returns removedHead
-// capture this.head.value before removing
-// re-declare the head this.head.next
-//------------------------------------------------------
-// contains - returns boolean
-// node.value look up
-//-----------------------------------------------------
-
-
 var LinkedList = function() {
   var list = {};
   list.head = null;
   list.tail = null;
+  list.count = 0;
 
   list.addToTail = function(value) {
     let node = new Node(value);
@@ -29,11 +18,16 @@ var LinkedList = function() {
     }
 
     this.tail = node;
+    this.count ++;
   };
 
   list.removeHead = function() {
     let removedHeadValue = this.head.value;
     this.head = this.head.next;
+
+    if (this.count > 0) {
+      this.count --;
+    }
 
     return removedHeadValue;
   };
@@ -41,18 +35,22 @@ var LinkedList = function() {
   list.contains = function(target) {
     let current = this.head;
 
-    while (current.next) { // head to 1 before tail
+    while (current.next) {
       if (current.value === target) {
         return true;
       }
       current = current.next;
     }
 
-    if (current.value === target) { // catches tail
+    if (current.value === target) {
       return true;
     }
 
     return false;
+  };
+
+  list.size = function () {
+    return this.count;
   };
 
   return list;

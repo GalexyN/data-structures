@@ -1,8 +1,7 @@
 var Tree = function(value) {
-  var newTree = {}; //gives methods to Tree
+  var newTree = {};
   newTree.value = value;
 
-  // your code here
   newTree.children = [];
 
   _.extend(newTree, treeMethods);
@@ -13,29 +12,36 @@ var Tree = function(value) {
 var treeMethods = {};
 
 treeMethods.addChild = function(value) {
-  //make the node
   var node = new Node(value);
-  //push node into parent's children property array
   this.children.push(node);
 };
 
 treeMethods.contains = function(target, node) {
-  //get starting point
   var currentNode = node || this;
-  //check if node matches target
   if (currentNode.value === target) {
     return true;
   }
-  //recurse through tree starting from 1 after root
+
   for (var i = 0; i < currentNode.children.length; i ++) {
-    var currentChild = currentNode.children[i]; // gets every child
+    var currentChild = currentNode.children[i];
     if (this.contains(target, currentChild)) {
       return true;
     }
   }
 
-  //returns boolean
   return false;
+};
+
+treeMethods.seeIfExtended = function () {
+  var isAnExtension = true;
+
+  for (var method in treeMethods) {
+    if (!this[method]) {
+      isAnExtension = false;
+    }
+  }
+
+  return isAnExtension;
 };
 
 var Node = function(value) {

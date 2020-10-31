@@ -1,37 +1,26 @@
-/*
-Set is an array of unique values
-
-.add -
-push to set.storage array
-
-.contains -
-indexOf !== -1
-returns boolean
-
-.remove -
-.splice
-
-*/
-
-
 var Set = function() {
   var set = Object.create(setPrototype);
-  set._storage = []; // fix me
+  set._storage = [];
 
   set._limit = 10;
+  set.valuesInsideSet = 0;
+
   return set;
 };
 
 var setPrototype = {};
 
 setPrototype.add = function(item) {
-  var index = getIndexBelowMaxForKey(item, this._limit); //gives hash number
+  var index = getIndexBelowMaxForKey(item, this._limit);
+  if (!this._storage[index]) {
+    this.valuesInsideSet++;
+  }
 
   this._storage[index] = item;
 };
 
 setPrototype.contains = function(item) {
-  var index = getIndexBelowMaxForKey(item, this._limit); //gives hash number
+  var index = getIndexBelowMaxForKey(item, this._limit);
 
   if (this._storage[index] !== undefined) {
     return true;
@@ -41,9 +30,25 @@ setPrototype.contains = function(item) {
 };
 
 setPrototype.remove = function(item) {
-  var index = getIndexBelowMaxForKey(item, this._limit); //gives hash number
+  var index = getIndexBelowMaxForKey(item, this._limit);
 
   delete this._storage[index];
+
+  if (this.valuesInsideSet > 0) {
+    this.valuesInsideSet--;
+  }
+};
+
+var getIndexBelowMaxForKey = function(str, max) {
+  var hash = 0;
+
+  for (var i = 0; i < str.length; i++) {
+    hash = (hash << 5) + hash + str.charCodeAt(i);
+    hash = hash & hash;
+    hash = Math.abs(hash);
+  }
+
+  return hash % max;
 };
 
 /*
@@ -59,13 +64,3 @@ setPrototype.remove = function(item) {
 // ADD = O(1)
 // CONTAINS = O(1)
 // REMOVE = O(1)
-
-var getIndexBelowMaxForKey = function(str, max) {
-  var hash = 0;
-  for (var i = 0; i < str.length; i++) {
-    hash = (hash << 5) + hash + str.charCodeAt(i);
-    hash = hash & hash; // Convert to 32bit integer
-    hash = Math.abs(hash);
-  }
-  return hash % max;
-};
