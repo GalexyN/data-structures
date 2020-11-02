@@ -29,22 +29,28 @@ class Tree {
       if (node.value === target) {
         return true;
       }
-      if (node.children) {
+      if (node.children.length !== 0) {
         for (var i = 0; i < node.children.length; i ++) {
           return searchTree(node.children[i]);
         }
       }
     };
 
-    if (searchTree(currentNode)) {
-      return true;
-    }
-
-    return false;
+    return searchTree(currentNode) ? true : false;
 
   }
 
   traverse (cb) {
+    let currentNode = this.root;
 
+    let traverseTree = node => {
+      cb(node.value);
+
+      if (node.children.length !== 0) {
+        _.each(node.children, traverseTree);
+      }
+    };
+
+    traverseTree(currentNode);
   }
 }

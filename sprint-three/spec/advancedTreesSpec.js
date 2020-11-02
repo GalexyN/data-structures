@@ -25,4 +25,25 @@ describe('advanced tree test', function () {
     expect(tree.contains(23)).to.equal(false);
 
   });
+
+  it('should use traverse and apply a callback to every node in the tree', function () {
+    let expected = [5, 1, 2, 3, 4, 6, 7];
+
+    let actual = [];
+    let pushValues = (nodeValue) => {
+      actual.push(nodeValue);
+    };
+
+    tree.root.addChild(1);
+    tree.root.children[0].addChild(2);
+    tree.root.children[0].children[0].addChild(3);
+    tree.root.children[0].children[0].children[0].addChild(4);
+    tree.root.children[0].children[0].children[0].children[0].addChild(6);
+    tree.root.children[0].children[0].children[0].children[0].children[0].addChild(7);
+
+    tree.traverse(pushValues);
+
+    expect(actual.length).to.equal(expected.length);
+    expect(JSON.stringify(actual)).to.equal(JSON.stringify(expected));
+  });
 });
